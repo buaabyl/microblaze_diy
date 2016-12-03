@@ -1,12 +1,16 @@
 # microblaze_diy
 Using microblaze as toy, create most of thing from nothing.
 
+The firmware size is small enough:) If you create from SDK, it will be 7000+ bytes!!!
+Is waste of Block RAM!
+
 Target
 - create cross comipler from gcc source
 - using Microblaze MCS and XPS
 - create a demo without Xilinx SDK
 - porting SDRAM interface
 - create a bootloader with xmodem
+
 
 ## compile gcc
 MUST build linux version first, because mingw32 need executable,
@@ -270,11 +274,28 @@ make install
 ## build firmware from gcc not from Xilinx SDK
 goto firmware and do this
 ```sh
-make
+Z:\microblaze_diy\firmware>make
+assembly ../source/newlib/crt0.s
+assembly ../source/libgcc/crti.s
+assembly ../source/newlib/crtinit.s
+assembly ../source/newlib/_exception_handler.s
+assembly ../source/newlib/_hw_exception_handler.s
+assembly ../source/newlib/_program_init.s
+assembly ../source/newlib/_program_clean.s
+compile  ../source/helloworld.c
+assembly ../source/newlib/microblaze_disable_interrupts.s
+assembly ../source/newlib/microblaze_enable_interrupts.s
+assembly ../source/libgcc/crtn.s
+create   helloworld.elf
+   text    data     bss     dec     hex filename
+   1516       0    2056    3572     df4 helloworld.elf
+create   helloworld.lst
+create   helloworld.bin
 ```
 
 I copy source and startup codes from newlib,
-and write driver myself.
+and write driver myself. 
+
 
 
 

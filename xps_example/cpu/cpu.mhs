@@ -1,0 +1,183 @@
+
+# ##############################################################################
+# Created by Base System Builder Wizard for Xilinx EDK 14.7 Build EDK_P.20131013
+# Fri Dec 02 09:50:27 2016
+# Target Board:  Custom
+# Family:    spartan6
+# Device:    xc6slx16
+# Package:   ftg256
+# Speed Grade:  -2
+# ##############################################################################
+ PARAMETER VERSION = 2.1.0
+
+
+ PORT RESET = RESET, DIR = I, SIGIS = RST, RST_POLARITY = 0
+ PORT clock_generator_0_CLKIN_pin = CLK, DIR = I, SIGIS = CLK, CLK_FREQ = 50000000
+ PORT clock_generator_0_CLKOUT0_pin = clk_50_0000MHz, DIR = O, SIGIS = CLK, CLK_FREQ = 50000000
+ PORT proc_sys_reset_0_Peripheral_Reset_pin = proc_sys_reset_0_Peripheral_Reset, DIR = O
+ PORT iomodule_dlmb_UART_Rx_pin = net_iomodule_dlmb_UART_Rx_pin, DIR = I
+ PORT iomodule_dlmb_UART_Tx_pin = iomodule_dlmb_UART_Tx, DIR = O
+ PORT iomodule_dlmb_GPO1_pin = iomodule_dlmb_GPO1, DIR = O, VEC = [31:0]
+ PORT iomodule_dlmb_GPI1_pin = iomodule_dlmb_GPI1, DIR = I, VEC = [31:0]
+ PORT iomodule_ilmb_IO_Addr_Strobe_pin = iomodule_ilmb_IO_Addr_Strobe, DIR = O
+ PORT iomodule_ilmb_IO_Read_Strobe_pin = iomodule_ilmb_IO_Read_Strobe, DIR = O
+ PORT iomodule_ilmb_IO_Write_Strobe_pin = iomodule_ilmb_IO_Write_Strobe, DIR = O
+ PORT iomodule_ilmb_IO_Address_pin = iomodule_ilmb_IO_Address, DIR = O, VEC = [31:0]
+ PORT iomodule_ilmb_IO_Byte_Enable_pin = iomodule_ilmb_IO_Byte_Enable, DIR = O, VEC = [3:0]
+ PORT iomodule_ilmb_IO_Write_Data_pin = iomodule_ilmb_IO_Write_Data, DIR = O, VEC = [31:0]
+ PORT iomodule_ilmb_IO_Read_Data_pin = iomodule_ilmb_IO_Read_Data, DIR = I, VEC = [31:0]
+ PORT iomodule_ilmb_IO_Ready_pin = iomodule_ilmb_IO_Ready, DIR = I
+ PORT iomodule_dlmb_IO_Addr_Strobe_pin = iomodule_dlmb_IO_Addr_Strobe, DIR = O
+ PORT iomodule_dlmb_IO_Read_Strobe_pin = iomodule_dlmb_IO_Read_Strobe, DIR = O
+ PORT iomodule_dlmb_IO_Write_Strobe_pin = iomodule_dlmb_IO_Write_Strobe, DIR = O
+ PORT iomodule_dlmb_IO_Address_pin = iomodule_dlmb_IO_Address, DIR = O, VEC = [31:0]
+ PORT iomodule_dlmb_IO_Byte_Enable_pin = iomodule_dlmb_IO_Byte_Enable, DIR = O, VEC = [3:0]
+ PORT iomodule_dlmb_IO_Write_Data_pin = iomodule_dlmb_IO_Write_Data, DIR = O, VEC = [31:0]
+ PORT iomodule_dlmb_IO_Read_Data_pin = iomodule_dlmb_IO_Read_Data, DIR = I, VEC = [31:0]
+ PORT iomodule_dlmb_IO_Ready_pin = iomodule_dlmb_IO_Ready, DIR = I
+
+
+BEGIN proc_sys_reset
+ PARAMETER INSTANCE = proc_sys_reset_0
+ PARAMETER HW_VER = 3.00.a
+ PARAMETER C_EXT_RESET_HIGH = 0
+ PORT Dcm_locked = proc_sys_reset_0_Dcm_locked
+ PORT MB_Reset = proc_sys_reset_0_MB_Reset
+ PORT Slowest_sync_clk = clk_50_0000MHz
+ PORT Ext_Reset_In = RESET
+ PORT BUS_STRUCT_RESET = proc_sys_reset_0_BUS_STRUCT_RESET
+ PORT Peripheral_Reset = proc_sys_reset_0_Peripheral_Reset
+END
+
+BEGIN lmb_v10
+ PARAMETER INSTANCE = microblaze_0_ilmb
+ PARAMETER HW_VER = 2.00.b
+ PORT SYS_RST = proc_sys_reset_0_BUS_STRUCT_RESET
+ PORT LMB_CLK = clk_50_0000MHz
+END
+
+BEGIN lmb_bram_if_cntlr
+ PARAMETER INSTANCE = microblaze_0_i_bram_ctrl
+ PARAMETER HW_VER = 3.10.c
+ PARAMETER C_BASEADDR = 0x00000000
+ PARAMETER C_HIGHADDR = 0x00001fff
+ BUS_INTERFACE SLMB = microblaze_0_ilmb
+ BUS_INTERFACE BRAM_PORT = microblaze_0_i_bram_ctrl_2_microblaze_0_bram_block
+END
+
+BEGIN lmb_v10
+ PARAMETER INSTANCE = microblaze_0_dlmb
+ PARAMETER HW_VER = 2.00.b
+ PORT SYS_RST = proc_sys_reset_0_BUS_STRUCT_RESET
+ PORT LMB_CLK = clk_50_0000MHz
+END
+
+BEGIN lmb_bram_if_cntlr
+ PARAMETER INSTANCE = microblaze_0_d_bram_ctrl
+ PARAMETER HW_VER = 3.10.c
+ PARAMETER C_BASEADDR = 0x00000000
+ PARAMETER C_HIGHADDR = 0x00001fff
+ BUS_INTERFACE SLMB = microblaze_0_dlmb
+ BUS_INTERFACE BRAM_PORT = microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block
+END
+
+BEGIN bram_block
+ PARAMETER INSTANCE = microblaze_0_bram_block
+ PARAMETER HW_VER = 1.00.a
+ BUS_INTERFACE PORTA = microblaze_0_i_bram_ctrl_2_microblaze_0_bram_block
+ BUS_INTERFACE PORTB = microblaze_0_d_bram_ctrl_2_microblaze_0_bram_block
+END
+
+BEGIN microblaze
+ PARAMETER INSTANCE = microblaze_0
+ PARAMETER HW_VER = 8.50.c
+ PARAMETER C_INTERCONNECT = 2
+ PARAMETER C_USE_BARREL = 1
+ PARAMETER C_USE_FPU = 0
+ PARAMETER C_DEBUG_ENABLED = 0
+ PARAMETER C_ICACHE_BASEADDR = 0X00000000
+ PARAMETER C_ICACHE_HIGHADDR = 0X3FFFFFFF
+ PARAMETER C_USE_ICACHE = 0
+ PARAMETER C_ICACHE_ALWAYS_USED = 0
+ PARAMETER C_DCACHE_BASEADDR = 0X00000000
+ PARAMETER C_DCACHE_HIGHADDR = 0X3FFFFFFF
+ PARAMETER C_USE_DCACHE = 0
+ PARAMETER C_DCACHE_ALWAYS_USED = 0
+ PARAMETER C_USE_HW_MUL = 0
+ PARAMETER C_USE_REORDER_INSTR = 0
+ PARAMETER C_AREA_OPTIMIZED = 1
+ BUS_INTERFACE DLMB = microblaze_0_dlmb
+ BUS_INTERFACE ILMB = microblaze_0_ilmb
+ BUS_INTERFACE INTERRUPT = iomodule_dlmb_INTERRUPT
+ PORT MB_RESET = proc_sys_reset_0_MB_Reset
+ PORT CLK = clk_50_0000MHz
+END
+
+BEGIN clock_generator
+ PARAMETER INSTANCE = clock_generator_0
+ PARAMETER HW_VER = 4.03.a
+ PARAMETER C_EXT_RESET_HIGH = 0
+ PARAMETER C_CLKIN_FREQ = 50000000
+ PARAMETER C_CLKOUT0_FREQ = 50000000
+ PARAMETER C_CLKOUT0_GROUP = NONE
+ PORT LOCKED = proc_sys_reset_0_Dcm_locked
+ PORT CLKOUT0 = clk_50_0000MHz
+ PORT RST = RESET
+ PORT CLKIN = CLK
+END
+
+BEGIN iomodule
+ PARAMETER INSTANCE = iomodule_dlmb
+ PARAMETER HW_VER = 1.03.a
+ PARAMETER C_BASEADDR = 0x80000000
+ PARAMETER C_HIGHADDR = 0x8000FFFF
+ PARAMETER C_USE_UART_RX = 1
+ PARAMETER C_USE_UART_TX = 1
+ PARAMETER C_UART_BAUDRATE = 115200
+ PARAMETER C_USE_FIT1 = 1
+ PARAMETER C_FIT1_No_CLOCKS = 50000
+ PARAMETER C_FIT1_INTERRUPT = 1
+ PARAMETER C_USE_GPO1 = 1
+ PARAMETER C_USE_GPI1 = 1
+ PARAMETER C_USE_IO_BUS = 1
+ PARAMETER C_IO_BASEADDR = 0x90000000
+ PARAMETER C_IO_HIGHADDR = 0x9FFFFFFF
+ BUS_INTERFACE SLMB = microblaze_0_dlmb
+ BUS_INTERFACE INTERRUPT = iomodule_dlmb_INTERRUPT
+ PORT CLK = clk_50_0000MHz
+ PORT IO_Addr_Strobe = iomodule_dlmb_IO_Addr_Strobe
+ PORT IO_Read_Strobe = iomodule_dlmb_IO_Read_Strobe
+ PORT IO_Write_Strobe = iomodule_dlmb_IO_Write_Strobe
+ PORT IO_Address = iomodule_dlmb_IO_Address
+ PORT IO_Byte_Enable = iomodule_dlmb_IO_Byte_Enable
+ PORT IO_Write_Data = iomodule_dlmb_IO_Write_Data
+ PORT IO_Read_Data = iomodule_dlmb_IO_Read_Data
+ PORT IO_Ready = iomodule_dlmb_IO_Ready
+ PORT UART_Rx = net_iomodule_dlmb_UART_Rx_pin
+ PORT UART_Tx = iomodule_dlmb_UART_Tx
+ PORT GPO1 = iomodule_dlmb_GPO1
+ PORT GPI1 = iomodule_dlmb_GPI1
+ PORT Rst = proc_sys_reset_0_Peripheral_Reset
+END
+
+BEGIN iomodule
+ PARAMETER INSTANCE = iomodule_ilmb
+ PARAMETER HW_VER = 1.03.a
+ PARAMETER C_BASEADDR = 0xC0000000
+ PARAMETER C_HIGHADDR = 0xC000FFFF
+ PARAMETER C_USE_IO_BUS = 1
+ PARAMETER C_IO_BASEADDR = 0xD0000000
+ PARAMETER C_IO_HIGHADDR = 0xDFFFFFFF
+ BUS_INTERFACE SLMB = microblaze_0_ilmb
+ PORT CLK = clk_50_0000MHz
+ PORT IO_Addr_Strobe = iomodule_ilmb_IO_Addr_Strobe
+ PORT IO_Read_Strobe = iomodule_ilmb_IO_Read_Strobe
+ PORT IO_Write_Strobe = iomodule_ilmb_IO_Write_Strobe
+ PORT IO_Address = iomodule_ilmb_IO_Address
+ PORT IO_Byte_Enable = iomodule_ilmb_IO_Byte_Enable
+ PORT IO_Write_Data = iomodule_ilmb_IO_Write_Data
+ PORT IO_Read_Data = iomodule_ilmb_IO_Read_Data
+ PORT IO_Ready = iomodule_ilmb_IO_Ready
+ PORT Rst = proc_sys_reset_0_Peripheral_Reset
+END
+

@@ -1,0 +1,220 @@
+////////////////////////////////////////////////////////////////////////////////
+// BMM LOC ifnormation file.
+//
+// @ref ug658 Data2MEM User Guide (v14.7)
+//      https://www.xilinx.com/support/documentation/sw_manuals/xilinx14_7/data2mem.pdf
+//
+//## Example for Microblaze (ISE 14.7, Spartan6)
+//      ADDRESS_MAP map_name processor_type processor_ID
+//          ADDRESS_SPACE space_name mtype[start:end]
+//              ADDRESS_RANGE RAMB16
+//                  BUS_BLOCK
+//                      mcs_0/u0/RAMB16_S4_1 [31:28]
+//                      .....
+//                      mcs_0/u7/RAMB16_S4_1 [3:0]
+//                  END_BUS_BLOCK;
+//              END_ADDRESS_RANGE;
+//          END_ADDRESS_SPACE;
+//      END_ADDRESS_MAP;
+//
+//  - `map_name` is an identifier that refers to 
+//    all the ADDRESS_SPACE keyw ords in an ADDRESS_MAP .
+//  - `processor_type` specifies the processor type.
+//  - iMPACT uses `processor_ID` as a JTAG ID to download 
+//    external memory contents to the proper processor .
+//  - `ADDRESS_SPACE` names must be unique only within a single `ADDRESS_MAP`.
+//    Normally, instance names must be unique within a single `ADDRESS_MAP`.
+//    However, Data2MEM requires instance names to be unique within the entire BMM file.
+//  - Any specific `ADDRESS_SPACE` is referred to by its `map_name` and `space_name`
+//    name separated by a period (or dot) character, for example, `map_name.space_name`
+//
+//## Example for Picoblaze (ISE 14.7, Spartan6)
+//
+//      ADDRESS_SPACE kcpsm6_rom_inst RAMB18 INDEX_ADDRESSING [0x00000000:0x000003FF] 
+//          BUS_BLOCK 
+//              kcpsm6_rom_inst/ram_1024_x_18 [0:17];
+//          END_BUS_BLOCK; 
+//      END_ADDRESS_SPACE; 
+//
+//  For RAMB18, we must swap bit ([0:17]), [17:0] will not work!!!
+//  When you using [17:0] the parity bit is correct, data bits reverse!
+//
+//  - For backw ard compatibility , `ADDRESS_SPACE` can still be defined outside an
+//    `ADDRESS_MAP` structure. Those `ADDRESS_SPACE` keyw ords are assumed to belong to
+//    an unnamed ADDRESS_MAP definition of type MB, PPC405 , or PPC440 and processor
+//    ID 0. Address tags for these ADDRESS_SPACES are used as the `space_name`.
+//
+//    the PLACED keyword will inserted after generated bitstream.
+//    and output then xxx_bd.bmm file.
+//
+//## Example for 8051
+//
+//      ADDRESS_SPACE rom_inst RAMB16 [0x00000000:0x000007FF] 
+//          BUS_BLOCK 
+//              rom_inst/dpram_2048_x_9 [7:0];
+//          END_BUS_BLOCK; 
+//      END_ADDRESS_SPACE; 
+//
+//## ADDRESS_SPACE
+//
+//      ADDRESS_SPACE ram_cntlr type <option> [start_addr:end_addr]
+//      ..
+//      END_ADDRESS_SPACE;
+//
+//  - type: RAMB16 RAMB18 RAMB32 RAMB36 MEMORY COMBINED
+//  - option: WORD_ADDRESSING INDEX_ADDRESSING
+//  - WORD_ADDRESSING: Following the memory device type is the optional `WORD_ADDRESSING` keyw ord.
+//    `WORD_ADDRESSING` tells Data2MEM that the smallest addressable unit is the bit lane width.
+//    `WORD_ADDRESSING` must be used if y ou w ant to utilize the parity in the Block RAMs.
+//
+//## BUS_BLOCK
+//
+//      BUS_BLOCK 
+//          BRAM_instance_name [MSB_bit_num:LSB_bit_num];
+//          BRAM_instance_name [MSB_bit_num:LSB_bit_num] LOC    = X1Y2;
+//          BRAM_instance_name [MSB_bit_num:LSB_bit_num] PLACED = X1Y2;
+//          BRAM_instance_name [MSB_bit_num:LSB_bit_num] OUTPUT = ram.mem;
+//          BRAM_instance_name [MSB_bit_num:LSB_bit_num] INPUT  = ram.mem;
+//      END_BUS_BLOCK; 
+//
+//
+//
+// this configuration is copy from IP Coregen result
+
+////////////////////////////////////////////////////////////////////////////////
+//      4KB: 2 x RAMB18_S18_S18
+//
+//ADDRESS_MAP cpu MICROBLAZE-LE 100
+//  ADDRESS_SPACE lmb_bram COMBINED [0x00000000:0x00000fff]
+//    ADDRESS_RANGE RAMB16
+//      BUS_BLOCK
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S18.Using_S18_Spartan3A.The_BRAMs[0].RAMB16BWE_I1 [31:16];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S18.Using_S18_Spartan3A.The_BRAMs[1].RAMB16BWE_I1 [15:0];
+//      END_BUS_BLOCK;
+//    END_ADDRESS_RANGE;
+//  END_ADDRESS_SPACE;
+//END_ADDRESS_MAP;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//      8KB: 4 x RAMB18_S9_S9
+//
+//ADDRESS_MAP cpu MICROBLAZE-LE 100
+//  ADDRESS_SPACE lmb_bram COMBINED [0x00000000:0x00001fff]
+//    ADDRESS_RANGE RAMB16
+//      BUS_BLOCK
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S9.The_BRAMs[0].RAMB16_S9_1 [31:24];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S9.The_BRAMs[1].RAMB16_S9_1 [23:16];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S9.The_BRAMs[2].RAMB16_S9_1 [15:8];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S9.The_BRAMs[3].RAMB16_S9_1 [7:0];
+//      END_BUS_BLOCK;
+//    END_ADDRESS_RANGE;
+//  END_ADDRESS_SPACE;
+//END_ADDRESS_MAP;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//      16KB: 8 x RAMB16_S4_S4
+//
+ADDRESS_MAP cpu MICROBLAZE-LE 100
+  ADDRESS_SPACE lmb_bram COMBINED [0x00000000:0x00003fff]
+    ADDRESS_RANGE RAMB16
+      BUS_BLOCK
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[0].RAMB16_S4_1 [31:28];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[1].RAMB16_S4_1 [27:24];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[2].RAMB16_S4_1 [23:20];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[3].RAMB16_S4_1 [19:16];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[4].RAMB16_S4_1 [15:12];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[5].RAMB16_S4_1 [11:8];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[6].RAMB16_S4_1 [7:4];
+        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S4.The_BRAMs[7].RAMB16_S4_1 [3:0];
+      END_BUS_BLOCK;
+    END_ADDRESS_RANGE;
+  END_ADDRESS_SPACE;
+END_ADDRESS_MAP;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//      32KB: 8 x RAMB18_S2_S2
+//
+//ADDRESS_MAP cpu MICROBLAZE-LE 100
+//  ADDRESS_SPACE lmb_bram COMBINED [0x00000000:0x00007fff]
+//    ADDRESS_RANGE RAMB16
+//      BUS_BLOCK
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[0].RAMB16_S2_1  [31:30];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[1].RAMB16_S2_1  [29:28];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[2].RAMB16_S2_1  [27:26];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[3].RAMB16_S2_1  [25:24];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[4].RAMB16_S2_1  [23:22];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[5].RAMB16_S2_1  [21:20];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[6].RAMB16_S2_1  [19:18];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[7].RAMB16_S2_1  [17:16];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[8].RAMB16_S2_1  [15:14];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[9].RAMB16_S2_1  [13:12];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[10].RAMB16_S2_1 [11:10];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[11].RAMB16_S2_1 [9:8];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[12].RAMB16_S2_1 [7:6];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[13].RAMB16_S2_1 [5:4];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[14].RAMB16_S2_1 [3:2];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S2.The_BRAMs[15].RAMB16_S2_1 [1:0];
+//      END_BUS_BLOCK;
+//    END_ADDRESS_RANGE;
+//  END_ADDRESS_SPACE;
+//END_ADDRESS_MAP;
+
+
+////////////////////////////////////////////////////////////////////////////////
+//      64KB: 16 x RAMB18_S1_S1
+//
+//ADDRESS_MAP cpu MICROBLAZE-LE 100
+//  ADDRESS_SPACE lmb_bram COMBINED [0x00000000:0x0000ffff]
+//    ADDRESS_RANGE RAMB16
+//      BUS_BLOCK
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[0].RAMB16_S1_1  [31:31];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[1].RAMB16_S1_1  [30:30];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[2].RAMB16_S1_1  [29:29];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[3].RAMB16_S1_1  [28:28];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[4].RAMB16_S1_1  [27:27];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[5].RAMB16_S1_1  [26:26];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[6].RAMB16_S1_1  [25:25];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[7].RAMB16_S1_1  [24:24];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[8].RAMB16_S1_1  [23:23];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[9].RAMB16_S1_1  [22:22];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[10].RAMB16_S1_1 [21:21];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[11].RAMB16_S1_1 [20:20];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[12].RAMB16_S1_1 [19:19];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[13].RAMB16_S1_1 [18:18];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[14].RAMB16_S1_1 [17:17];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[15].RAMB16_S1_1 [16:16];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[16].RAMB16_S1_1 [15:15];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[17].RAMB16_S1_1 [14:14];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[18].RAMB16_S1_1 [13:13];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[19].RAMB16_S1_1 [12:12];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[20].RAMB16_S1_1 [11:11];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[21].RAMB16_S1_1 [10:10];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[22].RAMB16_S1_1 [9:9];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[23].RAMB16_S1_1 [8:8];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[24].RAMB16_S1_1 [7:7];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[25].RAMB16_S1_1 [6:6];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[26].RAMB16_S1_1 [5:5];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[27].RAMB16_S1_1 [4:4];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[28].RAMB16_S1_1 [3:3];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[29].RAMB16_S1_1 [2:2];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[30].RAMB16_S1_1 [1:1];
+//        mcs_0/U0/lmb_bram_I/RAM_Inst/Using_B16_S1.The_BRAMs[31].RAMB16_S1_1 [0:0];
+//      END_BUS_BLOCK;
+//    END_ADDRESS_RANGE;
+//  END_ADDRESS_SPACE;
+//END_ADDRESS_MAP;
+
+
+
+
+
+
+
+
+
+
+
+
